@@ -1,6 +1,6 @@
 #include "ft_printf.h"
 
-static void putpad(char pad[16], int a)
+void putpad(char pad[16], int a)
 {
     int div;
     int mod;

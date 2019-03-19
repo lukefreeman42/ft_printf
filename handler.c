@@ -46,8 +46,8 @@ static  char    *set_flags(char *f, t_flags *flags)
         flags->neg += 1;
     else if (*f == '+' && f++)
         flags->add += 1;
-    else
-        f++;
+    else if (*f == '%' && f++)
+        write(1, "%", 1);
     return (f);
 }
 /*
@@ -68,9 +68,9 @@ char    *handle_ph(char *f, char buff[65], va_list arg)
         char_ph(buff, arg, flags);
     else if (*f == 's')
         str_ph(buff, arg, flags);
-    /*
     else if (*f == 'p')
-        1 == 1;
+        p_ph(buff, arg, flags);
+    /*
     else if (*f == 'd' || *f == 'i')
         1 == 1;
     else if (*f == 'o')
