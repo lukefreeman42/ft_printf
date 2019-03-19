@@ -14,9 +14,7 @@ static int     end_ph(char c)
 
 static  void    zero_flags(t_flags *flags)
 {
-    flags->hh = 0;
     flags->h = 0;
-    flags->ll = 0;
     flags->l = 0;
     flags->L = 0;
     flags->space = 0;
@@ -49,6 +47,10 @@ static  char    *set_flags(char *f, t_flags *flags)
         flags->add += 1;
     else if (*f == '%' && f++)
         write(1, "%", 1);
+    else if (*f == 'l' && f++)
+        flags->l += 1;
+    else if (*f == 'h' && f++)
+        flags->h += 1;
     return (f);
 }
 /*
@@ -71,9 +73,9 @@ char    *handle_ph(char *f, char buff[65], va_list arg)
         str_ph(buff, arg, flags);
     else if (*f == 'p')
         p_ph(buff, arg, flags);
-    /*
     else if (*f == 'd' || *f == 'i')
-        1 == 1;
+        d_ph(buff, arg, flags);
+    /*
     else if (*f == 'o')
         1 == 1;
     else if (*f == 'u')

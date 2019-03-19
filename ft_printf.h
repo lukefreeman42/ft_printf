@@ -3,9 +3,7 @@
 
 typedef struct  s_flags
 {
-    int     hh;
     int     h;
-    int     ll;
     int     l;
     int     L;
     int     space;
@@ -23,7 +21,8 @@ static char spaces[16] = {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' 
 int     ft_printf(char *f, ...);
 char    *handle_ph(char *f, char buff[65], va_list arg);
 void    invalid_ph(char c);
-void putpad(char pad[16], int a);
+void    putpad(char pad[16], int a);
 void    str_ph(char buff[65], va_list arg, t_flags flags);
+void    d_ph(char buff[65], va_list arg, t_flags flags);
 void    char_ph(char buff[65], va_list arg, t_flags flags);
 void    p_ph(char buff[65], va_list arg, t_flags flags);
