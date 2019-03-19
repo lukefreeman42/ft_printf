@@ -1,11 +1,16 @@
 #include "ft_printf.h"
 
-static char     convertion(int dig)
+static char     convertion(int dig, t_flags flags)
 {
     if (dig < 10)
         return (dig + 48);
     else
-        return (dig + 55);
+    {
+        if (flags.X)
+            return (dig + 55);
+        else
+            return (dig + 87);
+    }
 }
 
 void    num_handle(char buff[65], long long num, t_flags flags, int base)
@@ -22,7 +27,7 @@ void    num_handle(char buff[65], long long num, t_flags flags, int base)
     else
         while (num)
         {
-            buff[i++] = convertion(num % base);
+            buff[i++] = convertion(num % base, flags);
             num /= base;
         }
     if (flag)

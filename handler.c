@@ -25,6 +25,7 @@ static  void    zero_flags(t_flags *flags)
     flags->add = 0;
     flags->width = 0;
     flags->precision = 0;
+    flags->X = 0;
 }
 
 static  char    *set_flags(char *f, t_flags *flags)

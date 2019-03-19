@@ -14,6 +14,7 @@ typedef struct  s_flags
     int     add;
     int     precision;
     int     width;
+    int     X;
 }               t_flags;
 
 static char zeros[16] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
