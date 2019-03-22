@@ -1,13 +1,13 @@
 #include "ft_printf.h"
 
-static int     end_ph(char c)
+static int     end_ph(char c, t_flags *flags)
 {
     char ph_tbl[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', '%', 0};
     int i;
 
     i = 0;
     while (ph_tbl[i])
-        if (c == ph_tbl[i++])
+        if (c == ph_tbl[i++] && (flags->PH = ph_tbl[i - 1]))
             return (1);
     return (0);
 }
@@ -23,7 +23,7 @@ static  void    zero_flags(t_flags *flags)
     flags->add = 0;
     flags->width = 0;
     flags->precision = 0;
-    flags->X = 0;
+    flags->PH = 0;
 }
 
 static  char    *set_flags(char *f, t_flags *flags)
@@ -65,25 +65,15 @@ char    *handle_ph(char *f, char buff[65], va_list arg)
     f++;
     if (*f == '%' && write(1, "%", 1))
         return (++f);
-    while (!end_ph(*f) && *f)
+    while (!end_ph(*f, &flags) && *f)
         f = set_flags(f, &flags);
     if (*f == 'c')
         char_ph(buff, arg, flags);
     else if (*f == 's')
         str_ph(buff, arg, flags);
-    else if (*f == 'p')
-        p_ph(buff, arg, flags);
-    else if (*f == 'd' || *f == 'i')
-        d_ph(buff, arg, flags);
+    else if (*f == 'p' || *f == 'd' || *f == 'i' || *f == 'o' || *f == 'u' || *f == 'x' || *f == 'X')
+        num_ph(buff, arg, flags);
     /*
-    else if (*f == 'o')
-        1 == 1;
-    else if (*f == 'u')
-        1 == 1;
-    else if (*f == ('x'))
-        1 == 1;
-    else if (*f == 'X')
-        1 == 1;
     else if (*f == 'f')
         1 == 1;
     */

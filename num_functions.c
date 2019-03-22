@@ -6,14 +6,14 @@ static char     convertion(int dig, t_flags flags)
         return (dig + 48);
     else
     {
-        if (flags.X)
+        if (flags.PH == 'X')
             return (dig + 55);
         else
             return (dig + 87);
     }
 }
 
-void    num_handle(char buff[65], long long num, t_flags flags, int base)
+static void    num_handle(char buff[65], long long num, t_flags flags, int base)
 {
     int i;
     int flag;
@@ -34,63 +34,97 @@ void    num_handle(char buff[65], long long num, t_flags flags, int base)
     buff[i] = 0;
     ft_strrev(buff);
 }
+/*
+** Trims the number to the size specified in flags.
+*/
+static long long trim(va_list arg, t_flags flags)
+{
+    char hh;
+    short h;
+    int d;
+    unsigned int u;
+    long l;
+    long long ll;
+    if (flags.h == 2 && (hh = (char)va_arg(arg, int)))
+        return ((long long)hh);
+    else if (flags.h && (h = (short)va_arg(arg, int)))
+        return ((long long)h);
+    else if ((flags.l == 2 || flags.PH == 'p') && (ll = va_arg(arg, long long)))
+        return ((long long)ll);
+    else if (flags.l && (l = va_arg(arg, long)))
+        return ((long long)l);
+    else if (flags.PH != 'd' && (u = va_arg(arg, unsigned int)))
+        return ((long long)u);
+    d = va_arg(arg, int);
+    return ((long long)d);
+}
 
+void    num_ph(char buff[65], va_list arg, t_flags flags)
+{
+    long long num;
+    int len;
+    num = trim(arg, flags);
+    if (flags.PH == 'd' || flags.PH == 'u')
+        num_handle(buff, num, flags, 10);
+    else if (flags.PH == 'o')
+        num_handle(buff, num, flags, 8);
+    else
+        num_handle(buff, num, flags, 16);
+    len = ft_strlen(buff);
+    if (flags.PH == 'p')
+        prints(buff, flags, len, 2);
+    else
+        prints(buff, flags, len, 1);
+}
 void    p_ph(char buff[65], va_list arg, t_flags flags)
 {
     long long num;
     int len;
-    int n;
-    char *pad;
 
-    n = flags.width - 2;
     num = va_arg(arg, long long);
     num_handle(buff, num, flags, 16);
     len = ft_strlen(buff);
-    pad = flags.zero ? zeros : spaces;
-    if (!flags.precision && !flags.neg && !flags.zero && n > len)
-        putpad(pad, n - len);
-    write(1, "0x", 2);
-    if (!flags.precision && !flags.neg && flags.zero && n > len)
-        putpad(pad, n - len);
-    if (flags.precision)
-        putpad(zeros, n - len + 2);
-    write(1, buff, len);
-    if (!flags.precision && flags.neg && n > len)
-        putpad(spaces, n - len);
+    prints(buff, flags, len, 2);
 }
 
 void    d_ph(char buff[65], va_list arg, t_flags flags)
 {
-    long long num;
     int len;
-    int n;
-    char *pad;
+    long long num;
 
-    if (flags.h == 2)
-        num = (int)(char)va_arg(arg, int);
-    if (flags.h)
-        num = (int)(short)va_arg(arg, int);
-    if (flags.l)
-        num = (long)va_arg(arg, long);
-    if (flags.l == 2)
-        num = (long long)va_arg(arg, long long);
-    else
-        num = (long long)va_arg(arg, int);
-    n = flags.width;
+    num = trim(arg, flags);
     num_handle(buff, num, flags, 10);
     len = ft_strlen(buff);
-    pad = flags.zero ? zeros : spaces;
-    if (!flags.precision && !flags.neg && !flags.zero && n > len)
-        putpad(pad, n - len);
-    if (!flags.precision && !flags.neg && flags.zero && n > len){
-        if (buff[0] == '-')
-            write(1, buff++, 1);
-        putpad(pad, n - len);}
-    if (flags.precision){
-         if (buff[0] == '-')
-            write(1, buff++, 1);
-        putpad(zeros, n - len);}
-    write(1, buff, len);
-    if (!flags.precision && flags.neg && n > len)
-        putpad(spaces, n - len);
+    prints(buff, flags, len, 1);
+}
+void    u_ph(char buff[65], va_list arg, t_flags flags)
+{
+    int len;
+    long long num;
+
+    num = trim(arg, flags);
+    num_handle(buff, num, flags, 10);
+    len = ft_strlen(buff);
+    prints(buff, flags, len, 1);
+}
+void    o_ph(char buff[65], va_list arg, t_flags flags)
+{
+    int len;
+    long long num;
+
+    num = trim(arg, flags);
+    num_handle(buff, num, flags, 8);
+    len = ft_strlen(buff);
+    prints(buff, flags, len, 1);
+}
+
+void    x_ph(char buff[65], va_list arg, t_flags flags)
+{
+    int len;
+    long long num;
+
+    num = trim(arg, flags);
+    num_handle(buff, num, flags, 16);
+    len = ft_strlen(buff);
+    prints(buff, flags, len, 1);
 }
