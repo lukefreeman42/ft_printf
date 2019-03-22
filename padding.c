@@ -1,5 +1,8 @@
 #include "ft_printf.h"
 
+static char zeros[16] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
+static char spaces[16] = {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
+
 static void putpad(char pad[16], int a)
 {
     int div;

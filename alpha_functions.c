@@ -22,24 +22,22 @@ static void str_handle(char buff[65], char *str, t_flags flags, int len)
         buff[mod] = 0;
     }
 }
-
-void    str_ph(char buff[65], va_list arg, t_flags flags)
+void    alpha_ph(char buff[65], va_list arg, t_flags flags)
 {
     char    *str;
     int     len;
-
-    str = va_arg(arg, char*);
-    len = ft_strlen(str);
-    str_handle(buff, str, flags, len);
+    
+    if (flags.PH == 's')
+    {
+        str = va_arg(arg, char*);
+        len = ft_strlen(str);
+        str_handle(buff, str, flags, len);
+    }
+    else
+    {
+        buff[0] = (char)va_arg(arg, int);
+        buff[1] = 0;
+        len = 1;
+    }
     prints(buff, flags, len, 0);
-}
-
-void    char_ph(char buff[65], va_list arg, t_flags flags)
-{
-    char c;
-    char *pad;
-
-    buff[0] = (char)va_arg(arg, int);
-    buff[1] = 0;
-    prints(buff, flags, 1, 0);
 }

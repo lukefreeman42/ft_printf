@@ -2,7 +2,6 @@
 
 static int     end_ph(char c, t_flags *flags)
 {
-    char ph_tbl[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', '%', 0};
     int i;
 
     i = 0;
@@ -28,7 +27,7 @@ static  void    zero_flags(t_flags *flags)
 
 static  char    *set_flags(char *f, t_flags *flags)
 {
-    if (*f == '.' && f++) //Precision
+    if (*f == '.') //Precision
         flags->precision += 1;
     else if (is_num(*f) && *f != '0') //Width
     {
@@ -38,20 +37,21 @@ static  char    *set_flags(char *f, t_flags *flags)
             invalid_ph(*f);
         while (is_num(*f))
             f++;
+        return (f);
     }
-    else if (*f == '0' && f++)
+    else if (*f == '0')
         flags->zero += 1;
-    else if (*f == '-' && f++)
+    else if (*f == '-')
         flags->neg += 1;
-    else if (*f == '+' && f++)
+    else if (*f == '+')
         flags->add += 1;
-    else if (*f == '%' && f++)
+    else if (*f == '%')
         write(1, "%", 1);
-    else if (*f == 'l' && f++)
+    else if (*f == 'l')
         flags->l += 1;
-    else if (*f == 'h' && f++)
+    else if (*f == 'h')
         flags->h += 1;
-    return (f);
+    return (++f);
 }
 /*
 Handle_PH must print the argument according to ph found,
@@ -67,17 +67,13 @@ char    *handle_ph(char *f, char buff[65], va_list arg)
         return (++f);
     while (!end_ph(*f, &flags) && *f)
         f = set_flags(f, &flags);
-    if (*f == 'c')
-        char_ph(buff, arg, flags);
-    else if (*f == 's')
-        str_ph(buff, arg, flags);
-    else if (*f == 'p' || *f == 'd' || *f == 'i' || *f == 'o' || *f == 'u' || *f == 'x' || *f == 'X')
-        num_ph(buff, arg, flags);
-    /*
-    else if (*f == 'f')
-        1 == 1;
-    */
-    else
+    if (!*f)
         invalid_ph(*f);
+    else if (*f == 'f')
+        ;
+    else if (*f == 'c' || *f == 's')
+        alpha_ph(buff, arg, flags);
+    else
+        num_ph(buff, arg, flags);
     return (++f);
 }
