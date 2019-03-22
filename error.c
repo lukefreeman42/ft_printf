@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: llelias <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/03/22 16:46:34 by llelias           #+#    #+#             */
+/*   Updated: 2019/03/22 16:46:35 by llelias          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
-void    invalid_ph(char c)
+void	invalid_ph(char c)
 {
-        write(2, "\nERROR:ft_printf does not support this convertion", 49);
-    exit(-1);
+	write(2, "\nERROR:ft_printf does not support this convertion", 49);
+	exit(-1);
 }
