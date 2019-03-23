@@ -56,7 +56,7 @@ void			prints(char	buff[65], t_flags flags, int len, int num)
 				write(1, buff++, 1);
 		putpad(pad, n - len);
 	}
-	write(1, buff, ft_strlen(buff));
+	write(1, buff, len);
 	if (flags.neg && !flags.precision && n > len)
 		putpad(spaces, n - len);
 }

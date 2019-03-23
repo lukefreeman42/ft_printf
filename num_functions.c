@@ -13,7 +13,7 @@ static char     convertion(int dig, t_flags flags)
     }
 }
 
-static void    num_handle(char buff[65], long long num, t_flags flags, int base)
+void    num_handle(char buff[65], long long num, t_flags flags, int base)
 {
     int i;
     int flag;

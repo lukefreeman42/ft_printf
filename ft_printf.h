@@ -13,6 +13,8 @@
 #include <stdarg.h>
 #include <libft.h>
 
+#define MAX_ULONG 4294967295
+
 typedef	struct	s_flags
 {
 	int	h;
@@ -27,11 +29,13 @@ typedef	struct	s_flags
 	int	PH;
 }				t_flags;
 
-static char ph_tbl[10] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', 0};
+static char ph_tbl[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', 'f', 0};
 
 int		ft_printf(char *f, ...);
 char	*handle_ph(char *f, char buff[65], va_list arg);
 void	invalid_ph(char c);
 void	alpha_ph(char buff[65], va_list arg, t_flags flags);
 void	num_ph(char buff[65], va_list arg, t_flags flags);
+void    float_ph(char buff[64], va_list arg, t_flags flags);
+void    num_handle(char buff[65], long long num, t_flags flags, int base);
 void	prints(char buff[65], t_flags flags, int len, int num);

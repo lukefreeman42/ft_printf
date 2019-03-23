@@ -78,10 +78,10 @@ char		*handle_ph(char *f, char buff[65], va_list arg)
 		f = set_flags(f, &flags);
 	if (!*f)
 		invalid_ph(*f);
-	else if (*f == 'f')
-		;
 	else if (*f == 'c' || *f == 's')
 		alpha_ph(buff, arg, flags);
+	else if (*f == 'f')
+		float_ph(buff, arg, flags);
 	else
 		num_ph(buff, arg, flags);
 	return (++f);
