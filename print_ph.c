@@ -21,12 +21,19 @@ static	void	putpad(char pad[16], int a)
 **  1 = d/i/o/u/x/X
 **  2 = p
 */
-void			prints_ph(char	buff[65], t_flags flags, int len, int opt)
+
+void			prints_alpha(char buff[65], t_flags flags, int len)
+{
+
+}
+void			prints_ph(char	buff[65], t_flags flags, int opt)
 {
 	int		n;
+	int		len;
 	char	*pad;
 
 	n = flags.width;
+	len = ft_strlen(buff);
 	pad = flags.zero ? zeros : spaces;
 	if (opt == 1 && flags.precision)
 		pad = zeros;

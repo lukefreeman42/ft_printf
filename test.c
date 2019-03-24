@@ -10,9 +10,9 @@ int     main(int argc, char **argv)
     f = 1.325;
     if (argc == 2)
     {
-        ft_printf(argv[1], &a, f);
+        ft_printf(argv[1], &a, f, b);
         write(1,"\n", 1);
-        printf(argv[1], &a, f);
+        printf(argv[1], &a, f, b);
     }
     return (0);
 }

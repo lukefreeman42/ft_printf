@@ -70,7 +70,7 @@ void    num_ph(char buff[65], va_list arg, t_flags flags)
         evaluate_num(buff, num, flags, 16);
     len = ft_strlen(buff);
     if (flags.PH == 'p')
-        prints_ph(buff, flags, len, 2);
+        prints_ph(buff, flags, 2);
     else
-        prints_ph(buff, flags, len, 1);
+        prints_ph(buff, flags, 1);
 }

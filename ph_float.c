@@ -50,5 +50,5 @@ void    float_ph(char buff[64], va_list arg, t_flags flags)
 
     f = trim_float(arg, flags);
     evaluate_float(buff, f, flags);
-    prints_ph(buff, flags, 8, 3);
+    prints_ph(buff, flags, 3);
 }

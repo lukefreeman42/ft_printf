@@ -38,7 +38,6 @@ void    alpha_ph(char buff[65], va_list arg, t_flags flags)
     {
         buff[0] = (char)va_arg(arg, int);
         buff[1] = 0;
-        len = 1;
     }
-    prints_ph(buff, flags, len, 0);
+    prints_ph(buff, flags, 0);
 }

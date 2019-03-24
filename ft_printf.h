@@ -39,5 +39,5 @@ void	alpha_ph(char buff[65], va_list arg, t_flags flags);
 void	num_ph(char buff[65], va_list arg, t_flags flags);
 void    float_ph(char buff[64], va_list arg, t_flags flags);
 void    evaluate_num(char buff[65], long long num, t_flags flags, int base);
-void	prints_ph(char buff[65], t_flags flags, int len, int num);
+void	prints_ph(char buff[65], t_flags flags, int num);
 void	invalid(char c, int i);
