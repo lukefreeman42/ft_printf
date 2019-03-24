@@ -29,13 +29,15 @@ typedef	struct	s_flags
 	int	PH;
 }				t_flags;
 
-static char ph_tbl[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', 'f', 0};
+static	char	ph_tbl[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X', 'f', 0};
+static	char	zeros[16] = {'0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0'};
+static	char	spaces[16] = {' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' '};
 
 int		ft_printf(char *f, ...);
-char	*handle_ph(char *f, char buff[65], va_list arg);
-void	invalid_ph(char c);
+char	*ph_handler(char *f, char buff[65], va_list arg);
 void	alpha_ph(char buff[65], va_list arg, t_flags flags);
 void	num_ph(char buff[65], va_list arg, t_flags flags);
 void    float_ph(char buff[64], va_list arg, t_flags flags);
-void    num_handle(char buff[65], long long num, t_flags flags, int base);
-void	prints(char buff[65], t_flags flags, int len, int num);
+void    evaluate_num(char buff[65], long long num, t_flags flags, int base);
+void	prints_ph(char buff[65], t_flags flags, int len, int num);
+void	invalid(char c, int i);

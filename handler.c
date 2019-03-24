@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-static	int		end_ph(char c, t_flags *flags)
+static	int		is_ph(char c, t_flags *flags)
 {
 	int i;
 
@@ -23,21 +23,12 @@ static	int		end_ph(char c, t_flags *flags)
 	return (0);
 }
 
-static	void	zero_flags(t_flags *flags)
+static	void	zeroflags(t_flags *flags)
 {
-	flags->h = 0;
-	flags->l = 0;
-	flags->L = 0;
-	flags->space = 0;
-	flags->zero = 0;
-	flags->neg = 0;
-	flags->add = 0;
-	flags->width = 0;
-	flags->precision = 0;
-	flags->PH = 0;
+	ft_memset(flags, 0, sizeof(*flags));
 }
 
-static	char	*set_flags(char *f, t_flags *flags)
+static	char	*setflags(char *f, t_flags *flags)
 {
 	if (*f == '.')
 		flags->precision += 1;
@@ -46,7 +37,7 @@ static	char	*set_flags(char *f, t_flags *flags)
 		if (!flags->width)
 			flags->width = ft_atoi(f);
 		else
-			invalid_ph(*f);
+			invalid(*f, 2);
 		while (is_num(*f))
 			f++;
 		return (f);
@@ -66,18 +57,18 @@ static	char	*set_flags(char *f, t_flags *flags)
 	return (++f);
 }
 
-char		*handle_ph(char *f, char buff[65], va_list arg)
+char		*ph_handler(char *f, char buff[65], va_list arg)
 {
 	t_flags flags;
 
-	zero_flags(&flags);
+	zeroflags(&flags);
 	f++;
 	if (*f == '%' && write(1, "%", 1))
 		return (++f);
-	while (!end_ph(*f, &flags) && *f)
-		f = set_flags(f, &flags);
+	while (!is_ph(*f, &flags) && *f)
+		f = setflags(f, &flags);
 	if (!*f)
-		invalid_ph(*f);
+		invalid(*f, 1);
 	else if (*f == 'c' || *f == 's')
 		alpha_ph(buff, arg, flags);
 	else if (*f == 'f')

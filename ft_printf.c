@@ -19,18 +19,20 @@ static	int		putbuff(char buff[65], int i)
 	return (0);
 }
 
-static	void	ft_prints(char *f, va_list arg)
+int				ft_printf(char *f, ...)
 {
 	char	buff[65];
-	int		i;
+	va_list	arg;
+	int i;
 
+	va_start(arg, f);
 	i = 0;
 	while (*f)
 	{
 		if (*f == '%')
 		{
 			i = putbuff(buff, i);
-			f = handle_ph(f, buff, arg);
+			f = ph_handler(f, buff, arg);
 		}
 		else
 		{
@@ -40,13 +42,5 @@ static	void	ft_prints(char *f, va_list arg)
 		}
 	}
 	putbuff(buff, i);
-}
-
-int				ft_printf(char *f, ...)
-{
-	va_list	arg;
-
-	va_start(arg, f);
-	ft_prints(f, arg);
 	return (0);
 }
