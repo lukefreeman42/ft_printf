@@ -18,7 +18,7 @@ static long long get_mantissa(double num, double i_half)
     
     f_half = 0;
     remain = num - (double) i_half;
-    while (remain && f_half < MAX_ULONG)
+    while (remain && f_half <  (long long)MAX_ULONG)
     {
         num = remain * 10;
         i_half = (long long)num;
@@ -50,5 +50,5 @@ void    float_ph(char buff[64], va_list arg, t_flags flags)
 
     f = trim_float(arg, flags);
     evaluate_float(buff, f, flags);
-    prints_ph(buff, flags, 3);
+    prints_float(buff, flags);
 }

@@ -145,3 +145,38 @@ void			prints_ph(char	buff[65], t_flags flags, int opt)
 	if (flags.neg && !flags.precision && n > len)
 		putpad(spaces, n - len);
 }
+
+void		prints_float(char buff[65], t_flags flags)
+{
+	int width;
+	int int_len;
+	int len;
+	char *pad;
+
+	width = flags.width;
+	len = 0;
+	int_len = 0;
+	while (buff[len++] != '.')
+		int_len++;
+	len = ft_strlen(buff);
+	pad = (flags.zero || flags.precision) ? zeros: spaces ;
+	if (width > int_len + 7)
+	{
+		if (!flags.precision && !flags.neg)
+			putpad(pad, width - (int_len + 7));
+		write(1, buff, int_len);
+		write(1, buff + int_len, 7);
+		if (!flags.precision && flags.neg)
+			putpad(spaces, width - int_len - 7);
+		if (flags.precision)
+			write(1, buff + int_len + 7, width -  6);
+	}
+	else
+	{
+		write(1, buff, int_len);
+		if (flags.precision && width)
+			write(1, buff + int_len, width + 1);
+		else if (!flags.precision)
+			write(1, buff + int_len, 7);	
+	}
+}

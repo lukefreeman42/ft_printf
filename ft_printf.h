@@ -13,7 +13,7 @@
 #include <stdarg.h>
 #include <libft.h>
 
-#define MAX_ULONG 4294967295
+#define MAX_ULONG 1844674407370955161
 
 typedef	struct	s_flags
 {
@@ -41,3 +41,8 @@ void    float_ph(char buff[64], va_list arg, t_flags flags);
 void    evaluate_num(char buff[65], long long num, t_flags flags, int base);
 void	prints_ph(char buff[65], t_flags flags, int num);
 void	invalid(char c, int i);
+
+void	prints_addr(char buff[65], t_flags flags);
+void	prints_alpha(char buff[65], t_flags flags);
+void	prints_num(char buff[65], t_flags flags);
+void	prints_float(char buff[65], t_flags flags);
