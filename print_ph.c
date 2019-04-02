@@ -98,11 +98,24 @@ void			prints_num(char buff[65], t_flags flags)
 
 	width = flags.width;
 	len = ft_strlen(buff);
-	pad = flags.zero ? zeros : spaces ;
+	pad = (flags.zero || flags.precision) ? zeros: spaces ;
 	if (width > len)
 	{
-		putpad(pad, width - len);
+		if (pad == zeros && flags.add)
+			write(1, "+", 1);
+		if (!flags.neg || flags.precision)
+			putpad(pad, width - len);
+		if(pad != zeros && flags.add)
+			write(1, "+", 1);
+		write(1, buff, len);
+		if (flags.neg && !flags.precision)
+			putpad(spaces, width - len);
 	}
+	else
+	{
+		write(1, buff, len);
+	}
+	
 }
 void			prints_ph(char	buff[65], t_flags flags, int opt)
 {
