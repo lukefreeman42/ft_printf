@@ -22,9 +22,87 @@ static	void	putpad(char pad[16], int a)
 **  2 = p
 */
 
-void			prints_alpha(char buff[65], t_flags flags, int len)
+void			prints_alpha(char buff[65], t_flags flags)
 {
+	int width;
+	int len;
+	char *pad;
 
+	width = flags.width;
+	len = ft_strlen(buff);
+	pad = flags.zero && !flags.neg ? zeros : spaces;
+	if (width > len)
+	{
+		if (!flags.neg)
+			putpad(pad, width - len);
+		write(1, buff, len);
+		if (flags.neg)
+			putpad(pad, width - len);
+	}
+	else
+	{
+		if (flags.precision)
+			len = width;
+		write(1, buff, len);
+	}
+}
+void			prints_addr(char buff[65], t_flags flags)
+{
+	int width;
+	int len;
+	char *pad;
+
+	width = flags.width;
+	len = ft_strlen(buff);
+	pad = (flags.zero && !flags.neg) || flags.precision ? zeros: spaces;
+	if (width > len)
+	{
+		if (flags.precision)
+		{
+			write(1, "0x", 2);
+			putpad(pad, width - len);
+		}
+		else if (!flags.neg)
+		{ 
+			if (flags.zero)
+			{
+				write(1, "0x", 2);
+				putpad(pad, width - len - 2);
+			}
+			else
+			{
+				putpad(pad, width - len - 2);
+				write(1, "0x", 2);
+			}
+		}
+		if (flags.neg && !flags.precision)
+			write(1, "0x", 2);
+		write(1, buff, len);
+		if (flags.neg && !flags.precision)
+		{
+			putpad(pad, width - len - 2);
+		}
+	}
+	else
+	{
+		write(1, "0x", 2);
+		write(1, buff, len);
+	}
+}
+
+void			prints_num(char buff[65], t_flags flags)
+{
+	int width;
+	int len;
+	char *pad;
+
+	width = flags.width;
+	len = ft_strlen(buff);
+	pad = flags.zero ? zeros : spaces ;
+	if (width > len)
+	{
+		putpad(pad, width - len);
+	}
 }
 void			prints_ph(char	buff[65], t_flags flags, int opt)
 {
