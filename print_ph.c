@@ -30,7 +30,7 @@ void			prints_alpha(char buff[65], t_flags flags)
 
 	width = flags.width;
 	len = ft_strlen(buff);
-	pad = flags.zero && !flags.neg ? zeros : spaces;
+	pad = flags.zero && !flags.neg ? g_zeros : g_spaces;
 	if (width > len)
 	{
 		if (!flags.neg)
@@ -54,7 +54,7 @@ void			prints_addr(char buff[65], t_flags flags)
 
 	width = flags.width;
 	len = ft_strlen(buff);
-	pad = (flags.zero && !flags.neg) || flags.precision ? zeros: spaces;
+	pad = (flags.zero && !flags.neg) || flags.precision ? g_zeros: g_spaces;
 	if (width > len)
 	{
 		if (flags.precision)
@@ -98,18 +98,18 @@ void			prints_num(char buff[65], t_flags flags)
 
 	width = flags.width;
 	len = ft_strlen(buff);
-	pad = (flags.zero || flags.precision) ? zeros: spaces ;
+	pad = (flags.zero || flags.precision) ? g_zeros: g_spaces ;
 	if (width > len)
 	{
-		if (pad == zeros && flags.add)
+		if (pad == g_zeros && flags.add)
 			write(1, "+", 1);
 		if (!flags.neg || flags.precision)
 			putpad(pad, width - len);
-		if(pad != zeros && flags.add)
+		if(pad != g_zeros && flags.add)
 			write(1, "+", 1);
 		write(1, buff, len);
 		if (flags.neg && !flags.precision)
-			putpad(spaces, width - len);
+			putpad(g_spaces, width - len);
 	}
 	else
 	{
@@ -125,15 +125,15 @@ void			prints_ph(char	buff[65], t_flags flags, int opt)
 
 	n = flags.width;
 	len = ft_strlen(buff);
-	pad = flags.zero ? zeros : spaces;
+	pad = flags.zero ? g_zeros : g_spaces;
 	if (opt == 1 && flags.precision)
-		pad = zeros;
+		pad = g_zeros;
 	if (!flags.neg && !flags.precision && !flags.zero && n > len)
 		putpad(pad, n - len);
 	if (opt == 2 && (n -= 2))
 		write(1, "0x", 2);
 	if (flags.precision && opt == 2)
-		putpad(zeros, n - len + 2);
+		putpad(g_zeros, n - len + 2);
 	if (!flags.neg && !flags.precision && n > len)
 	{
 		if (opt == 1)
@@ -143,7 +143,7 @@ void			prints_ph(char	buff[65], t_flags flags, int opt)
 	}
 	write(1, buff, len);
 	if (flags.neg && !flags.precision && n > len)
-		putpad(spaces, n - len);
+		putpad(g_spaces, n - len);
 }
 
 void		prints_float(char buff[65], t_flags flags) //prints the buffer based on float rules
@@ -158,7 +158,7 @@ void		prints_float(char buff[65], t_flags flags) //prints the buffer based on fl
 		int_len++;
 	width = flags.width;	//if precesion flag, it's the amount of digits after the 0
 							//else its the amount of characters the place holder takes up, float number has 6 digits after the decimal
-	pad = (flags.zero || flags.precision) ? zeros: spaces ;
+	pad = (flags.zero || flags.precision) ? g_zeros: g_spaces ;
 	if (width > int_len + 7)
 	{
 		if (!flags.precision && !flags.neg)
@@ -166,7 +166,7 @@ void		prints_float(char buff[65], t_flags flags) //prints the buffer based on fl
 		write(1, buff, int_len);
 		write(1, buff + int_len, 7);
 		if (!flags.precision && flags.neg)
-			putpad(spaces, width - int_len - 7);
+			putpad(g_spaces, width - int_len - 7);
 		if (flags.precision)
 			write(1, buff + int_len + 7, width -  6);
 	}

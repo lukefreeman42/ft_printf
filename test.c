@@ -2,7 +2,7 @@
 #include <stdio.h>
 int     main(int argc, char **argv)
 {
-    float b = 23.239;
+    int b = 0;
     void *a = &b;
     {
         ft_printf(argv[1], b);
