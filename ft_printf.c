@@ -21,24 +21,24 @@ static	int		putbuff(char buff[65], int i)
 
 int				ft_printf(char *f, ...)
 {
-	char	buff[65];
+	char	buff[65]; // Store everything we parse that is not a place holder
 	va_list	arg;
-	int i;
+	int		i;
 
-	va_start(arg, f);
+	va_start(arg, f); //Grabs arguments
 	i = 0;
-	while (*f)
+	while (*f) //Parse format string
 	{
-		if (*f == '%')
+		if (*f == '%') //If placeholder is found
 		{
-			i = putbuff(buff, i);
-			f = ph_handler(f, buff, arg);
+			i = putbuff(buff, i); //Print buffer, reset buffer
+			f = ph_handler(f, buff, arg); //Evaluate and print evaluated placeholder, increment over placeholder
 		}
 		else
 		{
-			if (i == 63)
+			if (i == 63) //If buffer is full
 				i = putbuff(buff, 64);
-			buff[i++] = *f++;
+			buff[i++] = *f++; //Increment buffer and format string
 		}
 	}
 	putbuff(buff, i);

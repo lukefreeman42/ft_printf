@@ -17,15 +17,15 @@ static	int		is_ph(char c, t_flags *flags)
 	int i;
 
 	i = 0;
-	while (ph_tbl[i])
-		if (c == ph_tbl[i++] && (flags->PH = ph_tbl[i - 1]))
+	while (ph_tbl[i]) //check place_holder table for char c
+		if (c == ph_tbl[i++] && (flags->PH = ph_tbl[i - 1])) //if char c is inside our table, set the PlaceHolder flag and return True
 			return (1);
 	return (0);
 }
 
 static	void	zeroflags(t_flags *flags)
 {
-	ft_memset(flags, 0, sizeof(*flags));
+	ft_memset(flags, 0, sizeof(*flags)); //sets the address block of flags all to 0
 }
 
 static	char	*setflags(char *f, t_flags *flags)
@@ -57,23 +57,23 @@ static	char	*setflags(char *f, t_flags *flags)
 	return (++f);
 }
 
-char		*ph_handler(char *f, char buff[65], va_list arg)
+char			*ph_handler(char *f, char buff[65], va_list arg) //sets flags, and calls the correct function to handle the printing
 {
-	t_flags flags;
+	t_flags flags; //flags that define how we evaluate placeholder
 
-	zeroflags(&flags);
+	zeroflags(&flags); //reset flags
 	f++;
-	if (*f == '%' && write(1, "%", 1))
-		return (++f);
-	while (!is_ph(*f, &flags) && *f)
+	if (*f == '%' && write(1, "%", 1)) //if '%%' print '%'
+		return (++f); //return
+	while (!is_ph(*f, &flags) && *f) //while we are parsing through optional flags
 		f = setflags(f, &flags);
-	if (!*f)
+	if (!*f) //if we didn't find a converstion flag, we don't support it
 		invalid(*f, 1);
-	else if (*f == 'c' || *f == 's')
-		alpha_ph(buff, arg, flags);
-	else if (*f == 'f')
+	else if (*f == 'c' || *f == 's') //if converstion flag is 'c' or 's'
+		alpha_ph(buff, arg, flags); //evaluate and print 
+	else if (*f == 'f') 
 		float_ph(buff, arg, flags);
 	else
 		num_ph(buff, arg, flags);
-	return (++f);
+	return (++f); //place the parser right after the placeholder
 }

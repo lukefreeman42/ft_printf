@@ -146,19 +146,18 @@ void			prints_ph(char	buff[65], t_flags flags, int opt)
 		putpad(spaces, n - len);
 }
 
-void		prints_float(char buff[65], t_flags flags)
+void		prints_float(char buff[65], t_flags flags) //prints the buffer based on float rules
 {
 	int width;
 	int int_len;
-	int len;
 	char *pad;
 
-	width = flags.width;
-	len = 0;
+	width = 0;
 	int_len = 0;
-	while (buff[len++] != '.')
+	while (buff[width++] != '.') //width is used as a temporary parser
 		int_len++;
-	len = ft_strlen(buff);
+	width = flags.width;	//if precesion flag, it's the amount of digits after the 0
+							//else its the amount of characters the place holder takes up, float number has 6 digits after the decimal
 	pad = (flags.zero || flags.precision) ? zeros: spaces ;
 	if (width > int_len + 7)
 	{

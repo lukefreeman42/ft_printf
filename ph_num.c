@@ -1,12 +1,12 @@
 #include "ft_printf.h"
 
-static char     convertion(int dig, t_flags flags)
+static char     convertion(int dig, t_flags flags) //turns digits > 10 into corresponding alphanumeric value
 {
     if (dig < 10)
         return (dig + 48);
     else
     {
-        if (flags.PH == 'X')
+        if (flags.PH == 'X') //if X converstion, return them as capital letters
             return (dig + 55);
         else
             return (dig + 87);
@@ -35,7 +35,7 @@ static long long trim_num(va_list arg, t_flags flags)
     return ((long long)d);
 }
 
-void    evaluate_num(char buff[65], long long num, t_flags flags, int base)
+void    evaluate_num(char buff[65], long long num, t_flags flags, int base) //turns number into a string and puts it inside of buffer.
 {
     int i;
     int flag;
@@ -43,18 +43,18 @@ void    evaluate_num(char buff[65], long long num, t_flags flags, int base)
     i = 0;
     flag = 0;
     if (num == 0)
-        write(1, "0", 1);
-    else if (num < 0 && (num *= -1))
+        write(1, "0", 1); // maybe change to buff[0] = '0'
+    else if (num < 0 && (num *= -1)) //if its a negative make positive, set a flag
         flag = 1;
-    while (num)
+    while (num) //while we parse through the number
     {
-        buff[i++] = convertion(num % base, flags);
+        buff[i++] = convertion(num % base, flags); //put the digit into the buffer
         num /= base;
     }
-    if (flag)
-        buff[i++] = '-';
-    buff[i] = 0;
-    ft_strrev(buff);
+    if (flag) //if it was negative
+        buff[i++] = '-'; //put the negative sign in the buffer
+    buff[i] = 0; //null terminate the buffer
+    ft_strrev(buff); //reverse the buffer so it can be read left to right.
 }
 
 void    num_ph(char buff[65], va_list arg, t_flags flags)
