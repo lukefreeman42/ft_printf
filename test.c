@@ -2,7 +2,8 @@
 #include <stdio.h>
 int     main(int argc, char **argv)
 {
-    int b = 0;
+    long long b = 231464636366;
+	char *c = "yes";
     void *a = &b;
     {
         ft_printf(argv[1], b);

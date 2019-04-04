@@ -27,20 +27,20 @@ static	char		convertion(int dig, t_flags op)
 
 static	long long	trim_nb(va_list arg, t_flags op)
 {
-	t_trim size;
+	t_trim *size;
 
-	if (op.h == 2 && (size.hh = (char)va_arg(arg, int)))
-		return ((long long)size.hh);
-	else if (op.h && (size.h = (short)va_arg(arg, int)))
-		return ((long long)size.h);
-	else if ((op.l == 2 || op.plhld == 'p') && (size.ll = va_arg(arg, long long)))
-		return ((long long)size.ll);
-	else if (op.l && (size.l = va_arg(arg, long)))
-		return ((long long)size.l);
-	else if (op.plhld != 'd' && (size.u = va_arg(arg, unsigned int)))
-		return ((long long)size.u);
-	size.d = va_arg(arg, int);
-	return ((long long)size.d);
+	if (op.h == 2 && ((size->hh = (char)va_arg(arg, int)) || 1))
+		return ((long long)size->hh);
+	else if (op.h && ((size->h = (short)va_arg(arg, int)) || 1))
+		return ((long long)size->h);
+	else if ((op.l == 2 || op.plhld == 'p') && ((size->ll = va_arg(arg, long long)) || 1))
+		return ((long long)size->ll);
+	else if (op.l && ((size->l = va_arg(arg, long)) || 1))
+		return ((long long)size->l);
+	else if (op.plhld != 'd' && ((size->u = va_arg(arg, unsigned int)) || 1))
+		return ((long long)size->u);
+	size->d = va_arg(arg, int);
+	return ((long long)size->d);
 }
 
 void				evaluate_num(char b[65], long long nb, t_flags op, int base)
@@ -81,5 +81,5 @@ void				num_ph(char b[65], va_list arg, t_flags op)
 	if (op.plhld == 'p')
 		prints_addr(b, op);
 	else
-		prints_num(b, op);
+		prints_num2(b, op);
 }

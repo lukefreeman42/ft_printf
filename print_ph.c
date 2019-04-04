@@ -101,18 +101,29 @@ void			prints_num(char buff[65], t_flags flags)
 	pad = (flags.zero || flags.precision) ? g_zeros: g_spaces ;
 	if (width > len)
 	{
-		if (pad == g_zeros && flags.add)
-			write(1, "+", 1);
+		if (pad == g_zeros && (flags.add || buff[0] == '-'))
+		{
+			if (flags.add && buff[0] != '-')
+				write(1, "+", 1);
+			else
+			{
+				write(1, buff++, 1);
+				if (flags.add)
+					width += 1;
+			}
+		}
 		if (!flags.neg || flags.precision)
 			putpad(pad, width - len);
 		if(pad != g_zeros && flags.add)
 			write(1, "+", 1);
 		write(1, buff, len);
 		if (flags.neg && !flags.precision)
-			putpad(g_spaces, width - len);
+			putpad(g_spaces, width - len - flags.add);
 	}
 	else
 	{
+		if (flags.add)
+			write(1, "+", 1);
 		write(1, buff, len);
 	}
 	

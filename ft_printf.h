@@ -47,6 +47,7 @@ void			float_ph(char b[64], va_list arg, t_flags flags);
 void			prints_addr(char b[65], t_flags flags);
 void			prints_alpha(char b[65], t_flags flags);
 void			prints_num(char b[65], t_flags flags);
+void			prints_num2(char b[65], t_flags op);
 void			prints_float(char b[65], t_flags flags);
 void			evaluate_num(char b[65], long long num, t_flags flags, int bse);
 void			invalid(char c, int i);
