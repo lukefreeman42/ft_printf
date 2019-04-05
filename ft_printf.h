@@ -28,6 +28,7 @@ typedef	struct	s_flags
 	int	precision;
 	int	width;
 	int	plhld;
+	int alt;
 }				t_flags;
 
 typedef struct	s_trim

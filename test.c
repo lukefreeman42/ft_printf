@@ -2,7 +2,7 @@
 #include <stdio.h>
 int     main(int argc, char **argv)
 {
-    long long b = 231464636366;
+    float b = 23.636366;
 	char *c = "yes";
     void *a = &b;
     {

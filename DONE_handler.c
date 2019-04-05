@@ -28,6 +28,16 @@ static	void	zeroflags(t_flags *op)
 	ft_memset(op, 0, sizeof(*op));
 }
 
+static	void	fixflags(t_flags *op)
+{
+	if (op->neg)
+        op->zero = 0;
+    if (op->precision)
+        op->neg = 0;
+    if (op->add)
+        op->space = 0;
+}
+
 static	char	*setflags(char *f, t_flags *op)
 {
 	if (*f == '.')
@@ -48,12 +58,14 @@ static	char	*setflags(char *f, t_flags *op)
 		op->neg += 1;
 	else if (*f == '+')
 		op->add += 1;
-	else if (*f == '%')
-		write(1, "%", 1);
+	else if (*f == ' ')
+		op->space += 1;
 	else if (*f == 'l')
 		op->l += 1;
 	else if (*f == 'h')
 		op->h += 1;
+	else if (*f == '#')
+		op->alt +=1;
 	return (++f);
 }
 
@@ -67,6 +79,7 @@ char			*ph_handler(char *f, char b[65], va_list arg)
 		return (++f);
 	while (!is_ph(*f, &op) && *f)
 		f = setflags(f, &op);
+	fixflags(&op);
 	if (!*f)
 		invalid(*f, 1);
 	else if (*f == 'c' || *f == 's')
