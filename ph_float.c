@@ -48,12 +48,12 @@ static void			evaluate_float(char buff[65], double num, t_flags flags)
 
 	i = 0;
 	integer_half = (long long)num;
-	evaluate_num(buff, integer_half, flags, 10);
+	evaluate_num(buff, integer_half, &flags, 10);
 	while (buff[i])
 		i++;
 	buff[i++] = '.';
 	fractional_half = get_mantissa(num, integer_half);
-	evaluate_num(buff + i, fractional_half, flags, 10);
+	evaluate_num(buff + i, fractional_half, &flags, 10);
 }
 
 void				float_ph(char buff[64], va_list arg, t_flags flags)
@@ -62,5 +62,5 @@ void				float_ph(char buff[64], va_list arg, t_flags flags)
 
 	f = trim_float(arg, flags);
 	evaluate_float(buff, f, flags);
-	prints_float(buff, flags);
+	prints_num(buff, flags);
 }

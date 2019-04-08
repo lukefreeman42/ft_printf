@@ -12,6 +12,18 @@
 
 #include "ft_printf.h"
 
+static	void	putpad(char pad[16], int a)
+{
+	int	div;
+	int	mod;
+
+	div = a / 16;
+	mod = a % 16;
+	while (div--)
+		write(1, pad, 16);
+	write(1, pad, mod);
+}
+
 static	void	evaluate_str(char buff[65], char *str, t_flags flags, int len)
 {
 	int div;
@@ -34,6 +46,29 @@ static	void	evaluate_str(char buff[65], char *str, t_flags flags, int len)
 		buff[mod] = 0;
 	}
 }
+
+static	void	prints_alpha(char b[65], t_flags op)
+{
+	int		len;
+	char	*pad;
+
+	len = ft_strlen(b);
+	pad = op.zero ? g_zeros : g_spaces;
+	if (op.precision)
+	{
+		len = len >= op.width ? op.width : len;
+		write(1, b, len);
+	}
+	else
+	{
+		if (!op.neg)
+			putpad(pad, op.width - len);
+		write(1, b, len);
+		if (op.neg)
+			putpad(pad, op.width - len);
+	}
+}
+
 
 void			alpha_ph(char buff[65], va_list arg, t_flags flags)
 {

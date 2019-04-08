@@ -24,11 +24,12 @@ static	void	putpad(char pad[16], int a)
 	write(1, pad, mod);
 }
 
-static	char	*make_x(char b[65], t_flags *op, int *len)
+static	char	*make_pfx(t_flags *op)
 {
 	char *x;
 
-	if (b[0] == '-')
+	x = NULL;
+	if (op->negsign)
 		x = "-";
 	else if (op->add)
 		x = "+";
@@ -43,106 +44,76 @@ static	char	*make_x(char b[65], t_flags *op, int *len)
 		else if (op->plhld == 'X')
 			x = "0X";
 	}
-	else
-		x = "NULL";
-	if (((op->add || op->space) && b[0] != '-' && op->plhld != 'f' && (op->width -= 1))
-		|| (b[0] == '-' && op->precision && (*len -= 1))
-		|| (op->plhld == 'o' && !op->precision && (op->width -= 1))
-		|| (op->alt && op->plhld != 'o'
-			&& *x != '-' && !op->precision && (op->width -= 2)))
-		;
+	if (!op->precision || (op->alt && op->plhld == 'o'))
+	{
+		if (op->add || op->space || op->negsign || op->plhld == 'o') 
+			op->width -= 1;
+		else if (op->alt && op->plhld != 'o')
+			op->width -= 2;
+	}
 	return (x);
 }
 
-void			prints_alpha(char b[65], t_flags op)
-{
-	int		len;
-	char	*pad;
 
-	len = ft_strlen(b);
-	pad = op.zero ? g_zeros : g_spaces;
-	if (op.precision)
+static	void	prep_print(char b[65], t_flags *op)
+{
+	int x;
+	int i;
+
+	i = 0;
+	while (b[i] != '.' && b[i++])
+		op->len++;
+	op->flen = 0;
+
+	if (op->plhld == 'f')
 	{
-		len = len >= op.width ? op.width : len;
-		write(1, b, len);
+		op->flen = 7;
+		if (op->precision)
+			i = op->len + op->width;
+		else
+			i = op->len + op->flen - 1; 
+		if (b[i] == '.')
+			i--;
+		x = b[i + 1] == '.' ? 2 : 1; //maybe redundant
+		if (b[i + x] >= '5' && b[i] != '.')
+			b[i] += 1;
 	}
-	else
-	{
-		if (!op.neg)
-			putpad(pad, op.width - len);
-		write(1, b, len);
-		if (op.neg)
-			putpad(pad, op.width - len);
-	}
+}
+
+static void print_prefix(t_flags *op)
+{
+    char *pfx;
+
+    op->pad = (op->precision || op->zero) ? g_zeros : g_spaces;
+    pfx = make_pfx(op);
+    if (op->pad == g_zeros && (op->add || op->space || op->negsign || op->alt))
+			write(1, pfx, ft_strlen(pfx));
+	if ((!op->neg && !op->precision) || (!op->neg && op->plhld != 'f'))
+		putpad(op->pad, op->width - op->len - op->flen);
+	if (op->pad == g_spaces && (op->add || op->space || op->negsign || op->alt))
+		write(1, pfx, ft_strlen(pfx));
 }
 
 void			prints_num(char b[65], t_flags op)
 {
-	char	*x;
-	int		len;
-	char	*pad;
-
-	len = ft_strlen(b);
-	pad = (op.precision || op.zero) ? g_zeros : g_spaces;
-	x = make_x(b, &op, &len);
-	if (b[0] == '-')
-		b++;
-	if (pad == g_zeros && (op.add || op.space || *x == '-' || *x == '0'))
-		write(1, x, ft_strlen(x));
-	if (!op.neg)
-		putpad(pad, op.width - len);
-	if (pad == g_spaces && (op.add || op.space || *x == '-' || *x == '0'))
-		write(1, x, ft_strlen(x));
-	write(1, b, len);
-	if (op.neg)
-		putpad(pad, op.width - len);
-}
-
-
-static	void	round_float(char b[65], int i)
-{
-	int x;
-
-	x = b[i + 1] == '.' ? 2 : 1;
-	if (b[i + x] >= '5' && b[i] != '.')
-		b[i] += 1;
-}
-
-void			prints_float(char b[65], t_flags op)
-{
-	int		int_len;
-	int		frac_len;
-	char	*x;
-	char	*pad;
-
-	int_len = 0;
-	frac_len = 0;
-	while (b[frac_len++] != '.')
-		int_len++;
-	frac_len = 7;
-	pad = (op.precision || op.zero) ? g_zeros : g_spaces;
-	x = make_x(b, &op, &frac_len);
-	if (b[0] == '-')
-			b++;
-	if (pad == g_zeros && (op.add || op.space || *x == '-' || *x == '0'))
-			write(1, x, ft_strlen(x));
-	if (!op.neg && !op.precision)
-		putpad(pad, op.width - int_len - frac_len);
-	if (pad == g_spaces && (op.add || op.space || *x == '-' || *x == '0'))
-		write(1, x, ft_strlen(x));
-	if (op.precision)
+	prep_print(b, &op);
+	print_prefix(&op);
+	if (op.precision && op.plhld == 'f')
 	{
-		round_float(b, int_len + op.width);
 		if (op.width)
-			write(1, b, op.width + int_len + 1);
+		{
+			if (op.width > 19 && (write(1, b, 19 + op.len + 1)))
+				putpad(g_zeros, op.width - 19);
+			else
+				write(1, b, op.width + op.len + 1);
+		}
 		else
-			write(1, b, int_len);
+			write(1, b, op.len);
 	}
 	else
 	{
-		round_float(b, int_len + frac_len - 1);
-		write(1, b, int_len + frac_len);
+		write(1, b, op.len + op.flen);
 		if (op.neg)
-			putpad(pad, op.width - int_len - frac_len);
+			putpad(op.pad, op.width - op.len - op.flen);
 	}
 }
