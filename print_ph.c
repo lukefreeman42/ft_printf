@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: llelias <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/04/05 16:56:45 by llelias           #+#    #+#             */
-/*   Updated: 2019/04/05 17:02:01 by llelias          ###   ########.fr       */
+/*   Created: 2019/04/08 12:14:01 by llelias           #+#    #+#             */
+/*   Updated: 2019/04/08 12:19:21 by llelias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ static	char	*make_pfx(t_flags *op)
 {
 	char *x;
 
-	x = NULL;
 	if (op->negsign)
 		x = "-";
 	else if (op->add)
@@ -46,14 +45,13 @@ static	char	*make_pfx(t_flags *op)
 	}
 	if (!op->precision || (op->alt && op->plhld == 'o'))
 	{
-		if (op->add || op->space || op->negsign || op->plhld == 'o') 
+		if (op->add || op->space || op->negsign || op->plhld == 'o')
 			op->width -= 1;
 		else if (op->alt && op->plhld != 'o')
 			op->width -= 2;
 	}
 	return (x);
 }
-
 
 static	void	prep_print(char b[65], t_flags *op)
 {
@@ -64,30 +62,29 @@ static	void	prep_print(char b[65], t_flags *op)
 	while (b[i] != '.' && b[i++])
 		op->len++;
 	op->flen = 0;
-
 	if (op->plhld == 'f')
 	{
 		op->flen = 7;
 		if (op->precision)
 			i = op->len + op->width;
 		else
-			i = op->len + op->flen - 1; 
+			i = op->len + op->flen - 1;
 		if (b[i] == '.')
 			i--;
-		x = b[i + 1] == '.' ? 2 : 1; //maybe redundant
+		x = b[i + 1] == '.' ? 2 : 1;
 		if (b[i + x] >= '5' && b[i] != '.')
 			b[i] += 1;
 	}
 }
 
-static void print_prefix(t_flags *op)
+static void		print_prefix(t_flags *op)
 {
-    char *pfx;
+	char *pfx;
 
-    op->pad = (op->precision || op->zero) ? g_zeros : g_spaces;
-    pfx = make_pfx(op);
-    if (op->pad == g_zeros && (op->add || op->space || op->negsign || op->alt))
-			write(1, pfx, ft_strlen(pfx));
+	op->pad = (op->precision || op->zero) ? g_zeros : g_spaces;
+	pfx = make_pfx(op);
+	if (op->pad == g_zeros && (op->add || op->space || op->negsign || op->alt))
+		write(1, pfx, ft_strlen(pfx));
 	if ((!op->neg && !op->precision) || (!op->neg && op->plhld != 'f'))
 		putpad(op->pad, op->width - op->len - op->flen);
 	if (op->pad == g_spaces && (op->add || op->space || op->negsign || op->alt))
