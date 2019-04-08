@@ -6,7 +6,7 @@
 /*   By: llelias <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 17:03:34 by llelias           #+#    #+#             */
-/*   Updated: 2019/04/05 17:04:12 by llelias          ###   ########.fr       */
+/*   Updated: 2019/04/08 12:23:13 by llelias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ static	char	*setflags(char *f, t_flags *op)
 	{
 		if (!op->width)
 			op->width = ft_atoi(f);
-		else
-			invalid(*f, 2);
 		while (is_num(*f))
 			f++;
 		return (f);
