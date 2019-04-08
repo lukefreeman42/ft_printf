@@ -6,7 +6,7 @@
 /*   By: llelias <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 18:14:24 by llelias           #+#    #+#             */
-/*   Updated: 2019/04/02 18:14:27 by llelias          ###   ########.fr       */
+/*   Updated: 2019/04/08 12:24:08 by llelias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ static	void	prints_alpha(char b[65], t_flags op)
 			putpad(pad, op.width - len);
 	}
 }
-
 
 void			alpha_ph(char buff[65], va_list arg, t_flags flags)
 {
