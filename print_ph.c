@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_ph.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: llelias <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/05 16:56:45 by llelias           #+#    #+#             */
+/*   Updated: 2019/04/05 17:02:01 by llelias          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 static	void	putpad(char pad[16], int a)
@@ -12,33 +24,41 @@ static	void	putpad(char pad[16], int a)
 	write(1, pad, mod);
 }
 
-void        prints_num2(char b[65], t_flags op)
+static	char	*make_x(char b[65], t_flags *op, int *len)
 {
-    char *x;
-    int len;
-    char *pad;
+	char *x;
 
-    len = ft_strlen(b);
-    pad = (op.precision || op.zero) ? g_zeros : g_spaces;
-    x = b[0] == '-' ? "-" : op.add ? "+" : op.space ? " " : op.alt ? op.plhld == 'o' ? "0" : op.plhld == 'x' ? "0x" : "0X" : "Err";
-    if (((op.add || op.space) && b[0] != '-' && op.width--) || (b[0] == '-' && b++ && op.precision && len--) 
-		|| (op.plhld == 'o' && !op.precision && op.width--) || (op.alt && op.plhld != 'o' && x != NULL && *x != '-' && !op.precision && (op.width -= 2)))
-        ;
-    if(pad == g_zeros && (op.add || op.space || *x == '-' || *x == '0'))
-            write(1, x, ft_strlen(x));
-    if (!op.neg)
-        putpad(pad, op.width - len);
-    if(pad == g_spaces && (op.add || op.space || *x == '-' || *x == '0'))
-        write(1, x, ft_strlen(x));
-    write(1, b, len);
-    if (op.neg)
-        putpad(pad, op.width - len);
+	if (b[0] == '-')
+		x = "-";
+	else if (op->add)
+		x = "+";
+	else if (op->space)
+		x = " ";
+	else if (op->alt)
+	{
+		if (op->plhld == 'o')
+			x = "0";
+		else if (op->plhld == 'x')
+			x = "0x";
+		else if (op->plhld == 'X')
+			x = "0X";
+	}
+	else
+		x = "NULL";
+	if (((op->add || op->space) && b[0] != '-' && op->plhld != 'f' && (op->width -= 1))
+		|| (b[0] == '-' && op->precision && (*len -= 1))
+		|| (op->plhld == 'o' && !op->precision && (op->width -= 1))
+		|| (op->alt && op->plhld != 'o'
+			&& *x != '-' && !op->precision && (op->width -= 2)))
+		;
+	return (x);
 }
 
 void			prints_alpha(char b[65], t_flags op)
 {
-	int len;
-	char *pad;
+	int		len;
+	char	*pad;
+
 	len = ft_strlen(b);
 	pad = op.zero ? g_zeros : g_spaces;
 	if (op.precision)
@@ -48,38 +68,81 @@ void			prints_alpha(char b[65], t_flags op)
 	}
 	else
 	{
-		if(!op.neg)
+		if (!op.neg)
 			putpad(pad, op.width - len);
 		write(1, b, len);
-		if(op.neg)
+		if (op.neg)
 			putpad(pad, op.width - len);
 	}
 }
 
-void		prints_float(char b[65], t_flags op) //prints the buffer based on float rules
+void			prints_num(char b[65], t_flags op)
 {
-	int width;
-	int int_len;
-	int frac_len;
-	char *pad;
+	char	*x;
+	int		len;
+	char	*pad;
 
-	width = 0;
-	int_len = 0;
-	frac_len = 7;
-	while (b[width++] != '.')
-		int_len++;
-	width = op.width;
+	len = ft_strlen(b);
 	pad = (op.precision || op.zero) ? g_zeros : g_spaces;
-	if (op.precision && width)
-		write(1, b, width + int_len + 1); //rounding func which changes buff based on last digit printed.
-	else if (op.precision)
-		write(1, b, int_len);
-	else if (!op.precision)
+	x = make_x(b, &op, &len);
+	if (b[0] == '-')
+		b++;
+	if (pad == g_zeros && (op.add || op.space || *x == '-' || *x == '0'))
+		write(1, x, ft_strlen(x));
+	if (!op.neg)
+		putpad(pad, op.width - len);
+	if (pad == g_spaces && (op.add || op.space || *x == '-' || *x == '0'))
+		write(1, x, ft_strlen(x));
+	write(1, b, len);
+	if (op.neg)
+		putpad(pad, op.width - len);
+}
+
+
+static	void	round_float(char b[65], int i)
+{
+	int x;
+
+	x = b[i + 1] == '.' ? 2 : 1;
+	if (b[i + x] >= '5' && b[i] != '.')
+		b[i] += 1;
+}
+
+void			prints_float(char b[65], t_flags op)
+{
+	int		int_len;
+	int		frac_len;
+	char	*x;
+	char	*pad;
+
+	int_len = 0;
+	frac_len = 0;
+	while (b[frac_len++] != '.')
+		int_len++;
+	frac_len = 7;
+	pad = (op.precision || op.zero) ? g_zeros : g_spaces;
+	x = make_x(b, &op, &frac_len);
+	if (b[0] == '-')
+			b++;
+	if (pad == g_zeros && (op.add || op.space || *x == '-' || *x == '0'))
+			write(1, x, ft_strlen(x));
+	if (!op.neg && !op.precision)
+		putpad(pad, op.width - int_len - frac_len);
+	if (pad == g_spaces && (op.add || op.space || *x == '-' || *x == '0'))
+		write(1, x, ft_strlen(x));
+	if (op.precision)
 	{
-		if (!op.neg)
-			putpad(pad, width - int_len - frac_len);
+		round_float(b, int_len + op.width);
+		if (op.width)
+			write(1, b, op.width + int_len + 1);
+		else
+			write(1, b, int_len);
+	}
+	else
+	{
+		round_float(b, int_len + frac_len - 1);
 		write(1, b, int_len + frac_len);
 		if (op.neg)
-			putpad(pad, width - int_len - frac_len);
+			putpad(pad, op.width - int_len - frac_len);
 	}
 }
