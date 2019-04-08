@@ -44,28 +44,6 @@ static	long long	trim_nb(va_list arg, t_flags op)
 	return ((long long)size->d);
 }
 
-static long long trim(va_list arg, t_flags flags)
-{
-    char hh;
-    short h;
-    int d;
-    unsigned int u;
-    long l;
-    long long ll;
-    if (flags.h == 2 && (hh = (char)va_arg(arg, int)))
-        return ((long long)hh);
-    else if (flags.h && (h = (short)va_arg(arg, int)))
-        return ((long long)h);
-    else if ((flags.l == 2 || flags.plhld == 'p') && (ll = va_arg(arg, long long)))
-        return ((long long)ll);
-    else if (flags.l && (l = va_arg(arg, long)))
-        return ((long long)l);
-    else if (flags.plhld != 'd' && (u = va_arg(arg, unsigned int)))
-        return ((long long)u);
-    d = va_arg(arg, int);
-    return ((long long)d);
-}
-
 void				evaluate_num(char b[65], long long nb, t_flags *op, int base)
 {
 	int i;

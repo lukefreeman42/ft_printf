@@ -44,6 +44,7 @@ typedef struct	s_trim
 	long			l;
 	long long		ll;
 }				t_trim;
+
 int				ft_printf(char *f, ...);
 char			*ph_handler(char *f, char b[65], va_list arg);
 void			alpha_ph(char b[65], va_list arg, t_flags flags);
