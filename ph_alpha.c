@@ -69,21 +69,21 @@ static	void	prints_alpha(char b[65], t_flags op)
 	}
 }
 
-void			alpha_ph(char buff[65], va_list arg, t_flags flags)
+void			alpha_ph(char buff[65], va_list arg, t_flags *flags)
 {
 	char	*str;
 	int		len;
 
-	if (flags.plhld == 's')
+	if (flags->plhld == 's')
 	{
 		str = va_arg(arg, char*);
 		len = ft_strlen(str);
-		evaluate_str(buff, str, flags, len);
+		evaluate_str(buff, str, *flags, len);
 	}
 	else
 	{
 		buff[0] = (char)va_arg(arg, int);
 		buff[1] = 0;
 	}
-	prints_alpha(buff, flags);
+	prints_alpha(buff, *flags);
 }

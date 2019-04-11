@@ -81,10 +81,10 @@ char			*ph_handler(char *f, char b[65], va_list arg)
 	if (!*f)
 		invalid(*f, 1);
 	else if (*f == 'c' || *f == 's')
-		alpha_ph(b, arg, op);
+		alpha_ph(b, arg, &op);
 	else if (*f == 'f')
-		float_ph(b, arg, op);
+		float_ph(b, arg, &op);
 	else
-		num_ph(b, arg, op);
+		num_ph(b, arg, &op);
 	return (++f);
 }

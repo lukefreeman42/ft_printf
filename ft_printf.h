@@ -6,7 +6,7 @@
 /*   By: llelias <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 16:39:28 by llelias           #+#    #+#             */
-/*   Updated: 2019/04/02 19:39:44 by llelias          ###   ########.fr       */
+/*   Updated: 2019/04/10 14:38:44 by llelias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ typedef struct	s_trim
 
 int				ft_printf(char *f, ...);
 char			*ph_handler(char *f, char b[65], va_list arg);
-void			alpha_ph(char b[65], va_list arg, t_flags flags);
-void			num_ph(char b[65], va_list arg, t_flags flags);
-void			float_ph(char b[64], va_list arg, t_flags flags);
+void			alpha_ph(char b[65], va_list arg, t_flags *flags);
+void			num_ph(char b[65], va_list arg, t_flags *flags);
+void			float_ph(char b[64], va_list arg, t_flags *flags);
 void			prints_num(char b[65], t_flags flags);
-void			evaluate_num(char b[65], long long num, t_flags *flags, int bse);
+void			eval_num(char b[65], long long num, t_flags *flags, int bse);
 void			invalid(char c, int i);
 static	char	g_ph_tbl[11] = {'c', 's', 'p', 'd', 'i',
 								'o', 'u', 'x', 'X', 'f', 0};

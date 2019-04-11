@@ -100,7 +100,7 @@ void			prints_num(char b[65], t_flags op)
 		if (op.width)
 		{
 			if (op.width > 19 && (write(1, b, 19 + op.len + 1)))
-				putpad(g_zeros, op.width - 19);
+				putpad(g_zeros, op.len + op.width - 19);
 			else
 				write(1, b, op.width + op.len + 1);
 		}
