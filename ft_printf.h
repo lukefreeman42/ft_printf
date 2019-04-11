@@ -6,7 +6,7 @@
 /*   By: llelias <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 16:39:28 by llelias           #+#    #+#             */
-/*   Updated: 2019/04/10 14:38:44 by llelias          ###   ########.fr       */
+/*   Updated: 2019/04/10 20:06:30 by llelias          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,21 @@
 
 typedef	struct	s_flags
 {
-	int	h;
-	int	l;
-	int	lfloat;
-	int	space;
-	int	zero;
-	int	neg;
-	int	add;
-	int	precision;
-	int	width;
-	int	plhld;
-	int alt;
-	int negsign;
-	int len;
-	int flen;
-	char *pad;
+	int		h;
+	int		l;
+	int		lfloat;
+	int		space;
+	int		zero;
+	int		neg;
+	int		add;
+	int		precision;
+	int		width;
+	int		plhld;
+	int		alt;
+	int		negsign;
+	int		len;
+	int		flen;
+	char	*pad;
 }				t_flags;
 
 typedef struct	s_trim
@@ -53,10 +53,10 @@ void			float_ph(char b[64], va_list arg, t_flags *flags);
 void			prints_num(char b[65], t_flags flags);
 void			eval_num(char b[65], long long num, t_flags *flags, int bse);
 void			invalid(char c, int i);
-static	char	g_ph_tbl[11] = {'c', 's', 'p', 'd', 'i',
-								'o', 'u', 'x', 'X', 'f', 0};
-static	char	g_zeros[16] = {'0', '0', '0', '0', '0', '0', '0', '0'
-								, '0', '0', '0', '0', '0', '0', '0', '0'};
-static	char	g_spaces[16] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '
-								, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+static	char	g_ph_tbl[11] = {'c', 's', 'p', 'd', 'i', 'o', 'u', 'x', 'X',
+	'f', 0};
+static	char	g_zeros[16] = {'0', '0', '0', '0', '0', '0', '0', '0',
+	'0', '0', '0', '0', '0', '0', '0', '0'};
+static	char	g_spaces[16] = {' ', ' ', ' ', ' ', ' ', ' ', ' ',
+	' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 #endif
