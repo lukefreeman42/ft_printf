@@ -36,6 +36,8 @@ static	void	fixflags(t_flags *op)
 		op->neg = 0;
 	if (op->add)
 		op->space = 0;
+	if (op->alt && !(op->plhld == 'x' || op->plhld == 'X' || op->plhld == 'o'))
+		op->alt = 0;
 }
 
 static	char	*setflags(char *f, t_flags *op)
