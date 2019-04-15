@@ -65,6 +65,7 @@ static	void	prep_print(char b[65], t_flags *op)
 	if (op->plhld == 'f')
 	{
 		op->flen = 7;
+		ft_strwcat(&b[i], "0000000", 7);
 		if (op->precision)
 			i = op->len + op->width;
 		else
