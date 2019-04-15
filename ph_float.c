@@ -62,5 +62,7 @@ void				float_ph(char buff[64], va_list arg, t_flags *flags)
 
 	f = trim_float(arg, *flags);
 	evaluate_float(buff, f, flags);
+	if (flags->lfloat && !(flags->negsign = 0))
+		ft_strwcpy(buff, "0.000000000", 9);
 	prints_num(buff, *flags);
 }
