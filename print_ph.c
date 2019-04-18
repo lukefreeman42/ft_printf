@@ -47,7 +47,7 @@ static	char	*make_pfx(t_flags *op)
 	}
 	if (!op->precision || (op->alt && op->plhld == 'o'))
 	{
-		if (op->add || op->space || op->negsign || op->plhld == 'o')
+		if (op->add || op->space || op->negsign || (op->plhld == 'o' && op->alt))
 			op->width -= 1;
 		else if (op->alt && op->plhld != 'o')
 			op->width -= 2;
