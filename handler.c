@@ -42,31 +42,31 @@ static	void	fixflags(t_flags *op)
 
 static	char	*setflags(char *f, t_flags *op)
 {
-	if (*f == '.' && f++)
+	if (*f == '.')
 		op->precision += 1;
 	else if (is_num(*f) && *f != '0' && !op->width)
 	{
 		op->width = ft_atoi(f);
-		while (is_num(*f))
+		while (is_num(*(f + 1)))
 			f++;
 	}
-	else if (*f == 'L' && f++)
+	else if (*f == 'L')
 		op->lfloat += 1;
-	else if (*f == '0' && f++)
+	else if (*f == '0')
 		op->zero += 1;
-	else if (*f == '-' && f++)
+	else if (*f == '-')
 		op->neg += 1;
-	else if (*f == '+' && f++)
+	else if (*f == '+')
 		op->add += 1;
-	else if (*f == ' ' && f++)
+	else if (*f == ' ')
 		op->space += 1;
-	else if (*f == 'l' && f++)
+	else if (*f == 'l')
 		op->l += 1;
-	else if (*f == 'h' && f++)
+	else if (*f == 'h')
 		op->h += 1;
-	else if (*f == '#' && f++)
+	else if (*f == '#')
 		op->alt += 1;
-	return (f);
+	return (++f);
 }
 
 char			*ph_handler(char *f, char b[65], va_list arg)
